@@ -268,10 +268,11 @@ class ApcuCachingServiceTest extends TestCase
 
     public function testDeleteKeyDoesNotExist(): void
     {
-        $this->expectException(CachingException::class);
-        $this->expectExceptionMessage('The key does not exist.');
+        $key = $this->fakerService->getDataTypeGenerator()->randomString();
 
-        $this->cachingService->delete($this->fakerService->getDataTypeGenerator()->randomString());
+        $this->cachingService->delete($key);
+
+        $this->assertFalse($this->cachingService->has($key));
     }
 
     public function testClear(): void
