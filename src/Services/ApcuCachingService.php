@@ -76,7 +76,7 @@ class ApcuCachingService implements CachingServiceInterface
     public function delete(string $key): void
     {
         if (!$this->has($key)) {
-            throw new CachingException('The key does not exist.');
+            return;
         }
 
         if (!apcu_delete($key)) {
