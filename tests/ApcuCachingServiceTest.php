@@ -18,10 +18,10 @@ class ApcuCachingServiceTest extends TestCase
         $this->cachingService = new ApcuCachingService();
     }
 
-    #[DataProvider('dataProviderGet')]
-    public function testGet(mixed $expectedValue): void
+    public function testGet(): void
     {
         $key = $this->fakerService->getDataTypeGenerator()->randomString();
+        $expectedValue = $this->fakerService->getDataTypeGenerator()->randomString();
         $ttl = $this->fakerService->getDataTypeGenerator()->randomInteger(0, 60);
 
         $this->cachingService->set($key, $expectedValue, $ttl);
@@ -31,39 +31,10 @@ class ApcuCachingServiceTest extends TestCase
         $this->assertEquals($expectedValue, $this->cachingService->get($key));
     }
 
-    /**
-     * @return array<int,array<string,mixed>>
-     */
-    public static function dataProviderGet(): array
-    {
-        return [
-            [
-                'expectedValue' => [
-                    '1',
-                ],
-            ],
-            [
-                'expectedValue' => '1',
-            ],
-            [
-                'expectedValue' => 1.0,
-            ],
-            [
-                'expectedValue' => 1,
-            ],
-            [
-                'expectedValue' => true,
-            ],
-            [
-                'expectedValue' => null,
-            ],
-        ];
-    }
-
-    #[DataProvider('dataProviderSet')]
-    public function testSet(mixed $expectedValue): void
+    public function testSet(): void
     {
         $key = $this->fakerService->getDataTypeGenerator()->randomString();
+        $expectedValue = $this->fakerService->getDataTypeGenerator()->randomString();
         $ttl = $this->fakerService->getDataTypeGenerator()->randomInteger(0, 60);
 
         $this->cachingService->set($key, $expectedValue, $ttl);
@@ -71,35 +42,6 @@ class ApcuCachingServiceTest extends TestCase
         $this->assertTrue($this->cachingService->has($key));
         $this->assertEquals($ttl, $this->getTtl($key));
         $this->assertEquals($expectedValue, $this->cachingService->get($key));
-    }
-
-    /**
-     * @return array<int,array<string,mixed>>
-     */
-    public static function dataProviderSet(): array
-    {
-        return [
-            [
-                'expectedValue' => [
-                    '1',
-                ],
-            ],
-            [
-                'expectedValue' => '1',
-            ],
-            [
-                'expectedValue' => 1.0,
-            ],
-            [
-                'expectedValue' => 1,
-            ],
-            [
-                'expectedValue' => true,
-            ],
-            [
-                'expectedValue' => null,
-            ],
-        ];
     }
 
     #[DataProvider('dataProviderSetTtl')]
@@ -144,10 +86,10 @@ class ApcuCachingServiceTest extends TestCase
         );
     }
 
-    #[DataProvider('dataProviderGetOrSet')]
-    public function testGetOrSet(mixed $expectedValue): void
+    public function testGetOrSet(): void
     {
         $key = $this->fakerService->getDataTypeGenerator()->randomString();
+        $expectedValue = $this->fakerService->getDataTypeGenerator()->randomString();
         $ttl = $this->fakerService->getDataTypeGenerator()->randomInteger(0, 60);
 
         $value = $this->cachingService->getOrSet(
@@ -161,35 +103,6 @@ class ApcuCachingServiceTest extends TestCase
         $this->assertTrue($this->cachingService->has($key));
         $this->assertEquals($ttl, $this->getTtl($key));
         $this->assertEquals($expectedValue, $value);
-    }
-
-    /**
-     * @return array<int,array<string,mixed>>
-     */
-    public static function dataProviderGetOrSet(): array
-    {
-        return [
-            [
-                'expectedValue' => [
-                    '1',
-                ],
-            ],
-            [
-                'expectedValue' => '1',
-            ],
-            [
-                'expectedValue' => 1.0,
-            ],
-            [
-                'expectedValue' => 1,
-            ],
-            [
-                'expectedValue' => true,
-            ],
-            [
-                'expectedValue' => null,
-            ],
-        ];
     }
 
     #[DataProvider('dataProviderGetOrSetTtl')]
